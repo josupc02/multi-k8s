@@ -1,0 +1,27 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t client-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true client-test npm test 
+
+# If all things executed before of this went right
+after_success:
+  - docker build -t josua96/multi-client ./client
+  - docker build -t josua96/multi-nginx ./nginx
+  - docker build -t josua96/multi-server ./server
+  - docker build -t josua96/multi-worker ./worker
+
+# Log in to the docker CLI
+# This is to login just using one single command
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+
+# take those images and push them to docker hub
+
+  - docker push josua96/multi-client
+  - docker push josua96/multi-nginx
+  - docker push josua96/multi-server
+  - docker push josua96/multi-worker
