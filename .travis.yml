@@ -25,3 +25,27 @@ after_success:
   - docker push josua96/multi-nginx
   - docker push josua96/multi-server
   - docker push josua96/multi-worker
+
+
+deploy:
+ # travis comes pre-configured and it can deploy to different providers (aws beanstalk, digital ocean, etc)
+  provider: elasticbeanstalk
+  # the region that you used while creating the elastic beanstalk environment
+  # take the region of from the url of the elastic beanstalk instance http://dockerreact-env.eba-b34ztsm7.us-east-1.elasticbeanstalk.com/
+  region: us-east-1
+  # app name is the name of your elastic beanstalk application
+  app: multi-docker
+  # the environment you have created within your elastic beanstalk app  
+  env: Multidocker-env
+
+  # travis will take all of the files inside the github repository and it is going to create a zip all files in one
+  # after that, travis will copy the zip file to a aws s3 bucket, this is the bucket name
+  # The bucket is automatically created when you create the elastic beanstalk instance
+  bucket_name: elasticbeanstalk-us-east-1-869931711022
+  bucket_path: docker-multi # same of the app name, by default
+  on:
+    branch: master # deploy only when changes are pushed/merged to master
+  
+  # References travis environment variables configured to store the access and the secret key of the travis user created in AWS
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
