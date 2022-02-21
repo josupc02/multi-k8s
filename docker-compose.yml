@@ -27,7 +27,7 @@ services:
       - REDIS_PORT=$REDIS_PORT
   nginx:
     depends_on: # make nginx start once the client and the api were started
-      - api
+      - server
       - client
     image: "josua96/multi-nginx"
     mem_limit: 128m
