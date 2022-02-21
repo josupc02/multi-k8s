@@ -5,11 +5,11 @@ services:
     # hostname is like the named ip for the container that will be running this image
     # docker will redirect to this container all those request whose their hostname is client
     mem_limit: 128m
-    hostname: "client"
+    hostname: client
   server:
     image: "josua96/multi-server"
     mem_limit: 128m
-    hostname: "api"
+    hostname: api
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
@@ -21,7 +21,7 @@ services:
   worker:
     image: "josua96/multi-worker"
     mem_limit: 128m
-    hostname: "worker"
+    hostname: worker
     environment:
       - REDIS_HOST=$REDIS_HOST
       - REDIS_PORT=$REDIS_PORT
