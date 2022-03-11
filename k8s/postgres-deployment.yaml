@@ -12,8 +12,19 @@ spec:
       labels:
         component: postgres
     spec:
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim # this should match the name defined in the persistent volume claim config file
       containers:
         - name: postgres
           image: postgres
           ports:
             - containerPort: 5432
+          volumeMounts:
+          # this will make kubernetes to go to look for the postgres-storage that was requested and will use for this particular volume mounts
+            - name: postgres-storage
+          # anything that the container stores in this folder will be actually stores inside of the postgres-storage volume that lives in the host machine
+              mountPath: /var/lib/postgresql/data # the default folder where postgres store the database data
+          # subPath -> any data store in the mountPath will be stored inside a postgres folder, this postgres folder will be stored in the postgres-storage volume
+              subPath: postgres
