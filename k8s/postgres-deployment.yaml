@@ -21,6 +21,12 @@ spec:
           image: postgres
           ports:
             - containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pgpassword
+                  key: PGPASSWORD
           volumeMounts:
           # this will make kubernetes to go to look for the postgres-storage that was requested and will use for this particular volume mounts
             - name: postgres-storage

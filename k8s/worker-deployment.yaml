@@ -15,3 +15,8 @@ spec:
       containers:
         - name: worker
           image: josua96/multi-worker
+          env:
+            - name: REDIS_HOST
+              value: redis-cluster-ip-service # the name of the ip cluster that will handle request to the redis deployment object
+            - name: REDIS_PORT
+              value: '6379' # port of the redis cluster IP service
