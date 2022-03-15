@@ -1,0 +1,13 @@
+sudo: required
+services:
+  - docker
+before_install:
+  # download and install the google cloud sdk, "bash > /dev/null will install the google cloud sdk in our travis instance"
+  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  # go to the default installed directory for google cloud and look for the path.bash.basic file 
+  - source $HOME/google-cloud-sdk/path.bash.inc
+  # make sure the google cloud sdk will install the kubectl command
+  - gcloud components update kubectl
+  # authentication with google cloud, some credentials need it to have access to the google cloud account.
+  - gcloud auth activate-service-account --key-file service-account.json # credentials will be available in the service-account.json file.
+  
