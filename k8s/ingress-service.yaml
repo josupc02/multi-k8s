@@ -10,7 +10,7 @@ metadata:
     # configure how the actual copy of nginx behaves
     nginx.ingress.kubernetes.io/rewrite-target: /$1
     # tell the ingress service that it should be expecting to get a certificate from the letsencrypt-prod issuer.
-    certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
+    cert-manager.io/cluster-issuer: 'letsencrypt-prod'
     # force always user to use https
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 
