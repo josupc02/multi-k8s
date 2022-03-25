@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: joquemi-com-tls
+spec:
+ # specify where the secret should be stored after getting the certificate. It is created as a part of the certificate
+  # this secret will be created by the cert manager once it obtains the secret.
+  secretName: joquemi.com
+  issuerRef: # the issuer created for the cluster
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  # The common name its what will be put on the certificate
+  commonName: joquemi.com
+  # The list of all differents domains that should be associated with the certificate
+  dnsNames:
+    - joquemi.com
+    - www.joquemi.com
+  acme:
+    config:
+      - http01:
+          ingressClass: nginx
+        domains:
+          - joquemi.com
+          - www.joquemi.com
