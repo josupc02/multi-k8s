@@ -1,0 +1,43 @@
+apiVersion: skaffold/v2beta12
+kind: Config
+deploy:
+  kubectl:
+    # all the different config files that we want skaffold to manage
+    manifests:
+      - ./k8s/*
+build:
+  # by default, skaffold whenever it builds an image will try to push that image to docker hub.
+  local:
+  
+    push: false
+  artifacts: # containers we want skaffold to manage
+    - image: josua96/multi-client
+      context: client
+      docker:
+      # telling the docker file to use
+        dockerfile: Dockerfile.dev
+      sync:
+      # everytime that skaffold see that a javascript, css or html file changed, just take that file and throw it in the running container (the pod).
+        manual:
+          - src: "src/**/*.js"
+            dest: .
+          - src: "src/**/*.css"
+            dest: .
+          - src: "src/**/*.html"
+            dest: .
+    - image: josua96/multi-worker
+      context: worker
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
+    - image: josua96/multi-server
+      context: server
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+          - src: "*.js"
+            dest: .
